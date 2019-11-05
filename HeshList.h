@@ -6,9 +6,10 @@
 #define HESH_TABLE_HESHLIST_H
 
 #include <stdlib.h>
+#include "assert.h"
+#include <string.h>
 
-typedef long list_t;
-
+typedef long long list_t;
 template <typename T>
 struct element {
     T data_;
@@ -35,13 +36,21 @@ struct List {
     ~List ();
     List (const List& that) = delete;
 
-    void fillingFreePoints ();
+    T* searchByValue (T value);
+    void fillingFreePoints (list_t last_length);
     void autoIncreaseLength (list_t MULTIPLICATION_FACTOR = 2);
+//    void writeInTable ();
 
 //    T* insertAfterIndex(list_t index, T value);
     T* insertInEnd (T value);
 };
 
+type_list HeshingAlwaysOne(const char* str);
+type_list HeshingFirstSymbol(const char* str);
+type_list HeshingStringLength(const char* str);
+type_list HeshingSumSymbol(const char* str);
+type_list HeshingRol(const char* str);
+type_list HeshingGNU(const char* str);
 #include "HeshList.cpp"
 
 #endif //HESH_TABLE_HESHLIST_H
