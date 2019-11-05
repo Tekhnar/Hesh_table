@@ -12,27 +12,14 @@ List<T>::List() {
     length_ = 1000;
     size_calloc = 0;
 
-//    point_from_calloc[size_calloc++] = (T*) calloc (length_, sizeof(struct element<T>));
-
-    /*for (list_t i = 1; i < length_; i++){
-        ((element<T>*)point_from_calloc[0])[i].data_ = 0;
-        printf("%d\n", ((element<T>*)point_from_calloc[0])[i].data_);
-
-        ((element<T>*)point_from_calloc[0])[i].next_ = (T*)&(((element<T>*)point_from_calloc[0])[i + 1]);
-        printf("%p\n", &((element<T>*)point_from_calloc[0])[i]);
-    }*/
-
     point_from_calloc[size_calloc++] = (T*) calloc (length_, sizeof(struct element<T>));
 
     fillingFreePoints(length_);
 
     free_ = (T*)&(((element<T>*)point_from_calloc[0])[1]);
-//    printf("First free %p\n", free_ - 1);
 
     ((element<T>*)point_from_calloc[0])[length_ - 1].next_ = (T*)&(((element<T>*)point_from_calloc[0])[0]);
     ((element<T>*)point_from_calloc[0])[0].next_ = (T*)&(((element<T>*)point_from_calloc[0])[0]);
-
-//    length_*= MULTIPLICATION_FACTOR;
 }
 
 template <typename T>
@@ -46,17 +33,9 @@ List<T>::~List()
 template <typename T>
 void List<T>::autoIncreaseLength(list_t MULTIPLICATION_FACTOR)
 {
-//    point_from_calloc[size_calloc++] = (T*) calloc (length_, sizeof(struct element<T>));
     if (size_ + 1 >= length_ - 1) {
         list_t last_length = length_;
         length_ *= MULTIPLICATION_FACTOR;
-
-       /* for (list_t i = 0; i < last_length; i++){
-            printf("next [%ld] %p\n",i, ((element<T> *) point_from_calloc[size_calloc - 1])[i].next_);
-        }
-        printf("always NULL %p\n", ((element<T> *) point_from_calloc[size_calloc - 1])[last_length/2 -1].next_);
-*/
-
 
         point_from_calloc[size_calloc++] = (T*) calloc (last_length, sizeof(struct element<T>));
 
@@ -65,21 +44,8 @@ void List<T>::autoIncreaseLength(list_t MULTIPLICATION_FACTOR)
         ((element<T> *) point_from_calloc[size_calloc - 1])[last_length - 1].next_ =
                 (T *) &(((element<T> *) point_from_calloc[0])[0]);
 
-      /*  printf("NUll %p\n", (T *) &(((element<T> *) point_from_calloc[0])[0]));
-        printf("last free %p\n", free_);
-        printf("next free %p\n\n", ((element<T> *) free_)->next_ );
-        printf("Before next_ %p\n", ((element<T> *) point_from_calloc[size_calloc - 2])[last_length - 1].next_);
-        printf("New next_ %p\n", ((element<T> *) point_from_calloc[size_calloc - 1])[last_length - 1].next_);
-*/
-//        ((element<T> *) point_from_calloc[size_calloc - 2])[last_length - 1].next_ =
-//                (T *) &(((element<T> *) point_from_calloc[size_calloc - 1])[0]);
         ((element<T> *) free_)->next_  =
                 (T *) &(((element<T> *) point_from_calloc[size_calloc - 1])[0]);
-        /*printf("After next_ %p\n", ((element<T> *) point_from_calloc[size_calloc - 2])[last_length - 1].next_);
-
-        for (list_t i = 0; i < last_length; i++){
-            printf("next [%ld] %p\n",i, ((element<T> *) point_from_calloc[size_calloc - 1])[i].next_);
-        }*/
     }
 }
 
@@ -94,10 +60,8 @@ void List<T>::fillingFreePoints(list_t last_length)
 
     for (list_t i = 0; i < last_length; i++){
         (((element<T>*)point_from_calloc[size_calloc - 1])[i]).data_ = 0;
-//        printf("%d\n", ((element<T>*)point_from_calloc[size_calloc - 1])[i].data_);
 
         (((element<T>*)point_from_calloc[size_calloc - 1])[i]).next_ = (T*)&(((element<T>*)point_from_calloc[size_calloc - 1])[i + 1]);
-//        printf("%p\n", &((element<T>*)point_from_calloc[size_calloc - 1])[i]);
     }
 }
 
@@ -107,9 +71,7 @@ T* List<T>::insertInEnd (T value) {
     assert(free_);
 
     T* new_point = free_;
-//    printf("Free %p\n", free_);
     free_ = ((element<T>*)free_)->next_;
-//    printf("new Free %p\n", free_);
 
     if (size_ == 0) {
         head_ = new_point;
@@ -146,16 +108,13 @@ void HeshingWords (char *text, long length, List<T> a[], int size_array_list, ty
         int read_symbol = 0;
         char str[3000] = {};
         sscanf(point_read, "%s%n", str, &read_symbol);
-//        read_symbol = strlen(str);
         point_read += read_symbol;
         if (read_symbol == 0) break;
 
-//        printf("%s\n", str);
         T hesh = (*hesh_func)(str);
         int number = (int)(hesh % size_array_list);
-        if (a[number].searchByValue(hesh) == nullptr /*1*/) {
+        if (/*a[number].searchByValue(hesh) == nullptr*/ 1) { // to leave if you want write all worlds
             a[number].insertInEnd(hesh);
-//            a[number].size_++;
         }
     }
     printf("%p\n", end_of_file);
@@ -178,7 +137,6 @@ char* Buffering (FILE* file, long length) {
     assert(text != nullptr);
     long n = fread(text, sizeof(char), length, file);
     text[length - 1] = '\0';
-//    printf("nam %ld leng %ld\n", n, length);
     return text;
 }
 
@@ -220,7 +178,6 @@ void CloseToWriteInTable(FILE* table){
 template <typename T>
 void WordProcessing(List<T> a[], int size_array_list) {
     FILE* file = fopen("voina-i-mir.txt", "rb");
-//    FILE* file = fopen("evgeniy-onegin.txt", "rb");
     long length = ItLength(file) + 1;
     char *text = Buffering(file, length);
 
@@ -255,18 +212,6 @@ void WordProcessing(List<T> a[], int size_array_list) {
     CleaningStruct(a, size_array_list);
 
     printf("Fifth hesh\n");
-
-    HeshingWords (text, length, a, size_array_list, HeshingStringLength);
-    WriteInTable ("HeshingStringLength",a, table, size_array_list);
-    CleaningStruct(a, size_array_list);
-
-    printf("Second hesh\n");
-
-    HeshingWords (text, length, a, size_array_list, HeshingStringLength);
-    WriteInTable ("HeshingStringLength",a, table, size_array_list);
-    CleaningStruct(a, size_array_list);
-
-    printf("Second hesh\n");
 
     CloseToWriteInTable(table);
 }
@@ -358,49 +303,3 @@ unsigned int HeshingMurmurHash(const char text[])
 
     return h;
 }
-
-/*
-template <typename T>
-T* List<T>::insertAfterIndex(list_t index, T value)
-{
-//    check_OK();
-//    if (index < 0 || index >length_) printError(6);
-//    autoIncreaseLength();
-//    if (index != tail_) list_is_sort = false;
-    T* new_index = free_;
-    free_ = ;
-
-    if (size_ == 0){
-        if (index == tail_){
-            prev_[new_index] = 0;
-            next_[new_index] = 0;
-
-            tail_ = new_index;
-            head_ = new_index;
-        } else printError (4);
-    }
-    else if (size_ > 0) {
-        if (tail_ == index){
-            prev_[new_index] = tail_;
-            next_[new_index] = 0;
-            next_[tail_] = new_index;
-
-            tail_ = new_index;
-        } else {
-            prev_[new_index] = index;
-            next_[new_index] = next_[index];
-            prev_[next_[index]] = new_index;
-            next_[index] = new_index;
-        }
-    }
-
-    data_ [new_index] = value;
-    size_++;
-    return new_index;
-}*/
-/*
-template <typename T>
-element<T>::element() :
-data_ (nullptr),
-next_ (nullptr),
-{}*/

@@ -14,9 +14,6 @@ template <typename T>
 struct element {
     T data_;
     T* next_;
-    /*element ();
-    ~element();
-    element (const element& that) = delete;*/
 };
 
 template <typename T>
@@ -39,9 +36,6 @@ struct List {
     T* searchByValue (T value);
     void fillingFreePoints (list_t last_length);
     void autoIncreaseLength (list_t MULTIPLICATION_FACTOR = 2);
-//    void writeInTable ();
-
-//    T* insertAfterIndex(list_t index, T value);
     T* insertInEnd (T value);
 };
 
